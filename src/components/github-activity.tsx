@@ -108,11 +108,11 @@ function Loaded({ data }: { data: ReadyData }) {
         <div className="panel mb-6 border-l-2 p-6" style={{ borderLeftColor: 'var(--cyan)' }}>
           <p className="label mb-3">o que é isso?</p>
           <p className="prose-text text-muted max-w-2xl text-pretty text-[15px] leading-relaxed">
-            O GitHub é o lugar público onde programadores guardam e publicam seu
-            código — como um portfólio aberto que qualquer pessoa pode conferir.
-            Os números abaixo vêm direto de lá, ao vivo, e se atualizam
-            sozinhos. Não dá para maquiar: é a forma mais simples de você
-            verificar que eu programo de verdade sem depender da minha palavra.
+            O GitHub é o lugar público onde programadores guardam e publicam
+            código aberto. Os números abaixo vêm direto de lá, ao vivo. Vale
+            dizer que boa parte do meu trabalho não aparece aqui: código feito
+            para cliente costuma ser privado. Se quiser ver resultado de
+            verdade, os sites na seção de projetos estão todos no ar.
           </p>
         </div>
       </Reveal>

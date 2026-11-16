@@ -8,6 +8,22 @@ export const revalidate = 3600;
 const API = 'https://api.github.com';
 const MAX_LANGUAGES = 6;
 
+/**
+ * Mínimo de repositórios públicos para a seção aparecer no site.
+ *
+ * Com perfil novo ou quase vazio, esta seção trabalha contra você: "1 projeto
+ * publicado · 0 estrelas" diz menos do que não dizer nada, e o público
+ * principal do site (quem não é da área) nem entende a métrica. A prova forte
+ * já está em Projetos e Experiência.
+ *
+ * Com 4 ou mais repositórios o perfil começa a contar uma história sozinho —
+ * aí a seção volta automaticamente, sem precisar mexer em código.
+ *
+ * Quer desligar de vez? Apague `<GithubActivity />` de src/app/page.tsx.
+ * Quer ligar agora mesmo? Baixe este número para 1.
+ */
+const MIN_PUBLIC_REPOS = 4;
+
 type RawUser = {
   login: string;
   name: string | null;
@@ -121,6 +137,11 @@ export async function GET(): Promise<Response> {
     const rawRepos: RawRepo[] = reposResponse.ok ? await reposResponse.json() : [];
 
     const ownRepos = rawRepos.filter((repo) => !repo.fork && !repo.archived);
+
+    // Perfil ainda vazio: melhor não mostrar a seção do que mostrar zeros.
+    if (ownRepos.length < MIN_PUBLIC_REPOS) {
+      return NextResponse.json({ disabled: true });
+    }
 
     const stars = ownRepos.reduce((total, repo) => total + repo.stargazers_count, 0);
 

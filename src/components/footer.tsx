@@ -1,5 +1,5 @@
 import { sectionList } from '@/lib/sections';
-import { site } from '@/lib/site';
+import { site, socialConfigured } from '@/lib/site';
 
 export function Footer() {
   const year = new Date().getFullYear();
@@ -72,16 +72,18 @@ export function Footer() {
                 GitHub ↗
               </a>
             </li>
-            <li>
-              <a
-                href={site.socials.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-muted transition hover:text-[color:var(--cyan)]"
-              >
-                LinkedIn ↗
-              </a>
-            </li>
+            {socialConfigured(site.socials.linkedin) ? (
+              <li>
+                <a
+                  href={site.socials.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-muted transition hover:text-[color:var(--cyan)]"
+                >
+                  LinkedIn ↗
+                </a>
+              </li>
+            ) : null}
             <li className="text-faint pt-1">{site.location}</li>
           </ul>
         </div>

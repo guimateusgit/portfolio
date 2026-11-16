@@ -91,11 +91,11 @@ export const sections = {
   github: {
     id: 'github',
     index: '07',
-    label: 'GitHub',
-    title: 'Prova de que eu programo mesmo',
+    label: 'Código aberto',
+    title: 'O que eu publico de código aberto',
     summary:
-      'Números públicos do meu perfil de programador, puxados ao vivo e atualizados sozinhos. Não dá para maquiar.',
-    keywords: ['github', 'código', 'repositório', 'prova', 'portfólio técnico'],
+      'Números do meu perfil público, puxados ao vivo e atualizados sozinhos. Se você é da área, pode abrir qualquer projeto e ler o código por completo.',
+    keywords: ['github', 'código', 'repositório', 'open source', 'portfólio técnico'],
   },
   projetos: {
     id: 'projetos',

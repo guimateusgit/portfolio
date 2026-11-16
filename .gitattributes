@@ -1,0 +1,16 @@
+# Finais de linha: o repositório guarda sempre LF, em qualquer sistema.
+# Sem isto, o Git do Windows avisa "LF will be replaced by CRLF" a cada
+# `git add`, e um mesmo arquivo pode aparecer como alterado só por causa do
+# fim de linha quando duas máquinas diferentes mexem nele.
+* text=auto eol=lf
+
+# Binários nunca passam por conversão.
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.ico  binary
+*.webp binary
+*.pdf  binary
+*.woff binary
+*.woff2 binary

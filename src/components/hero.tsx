@@ -2,7 +2,7 @@
 
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowDown, ArrowRight, Github, Linkedin, Mail } from 'lucide-react';
-import { heroTags, site, whatsappLink } from '@/lib/site';
+import { heroTags, site, socialConfigured, whatsappLink } from '@/lib/site';
 import { Magnetic } from './fx/magnetic';
 import { Tilt } from './fx/tilt';
 
@@ -121,7 +121,9 @@ export function Hero() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="LinkedIn"
-                  className="text-faint transition hover:text-[color:var(--cyan)]"
+                  className={`text-faint transition hover:text-[color:var(--cyan)] ${
+                    socialConfigured(site.socials.linkedin) ? '' : 'hidden'
+                  }`}
                 >
                   <Linkedin className="size-[18px]" aria-hidden />
                 </a>

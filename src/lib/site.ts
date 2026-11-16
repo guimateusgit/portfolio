@@ -26,17 +26,28 @@ export const site = {
     'Mateus Guimarães — Desenvolvedor Full Stack especializado em aplicações web modernas (React, Next.js, TypeScript, Node.js) e automações com Inteligência Artificial. Transformo processos manuais em sistemas rápidos, escaláveis e mensuráveis.',
 
   /**
-   * 👉 TROQUE PELO SEU USUÁRIO REAL DO GITHUB.
-   * Alimenta a seção "github.json". Se ficar vazio ou com o valor de exemplo,
-   * a seção simplesmente não aparece no site.
+   * Usuário do GitHub que alimenta a seção "Prova de que eu programo mesmo".
+   *
+   * A seção só aparece no site quando o perfil tiver pelo menos um
+   * repositório público (ver MIN_PUBLIC_REPOS em src/app/api/github/route.ts).
+   * Enquanto estiver vazio, ela some sozinha — e volta sozinha no primeiro
+   * push. Não precisa mexer em código de novo.
    */
-  githubUser: 'https://github.com/guimateusgit',
+  githubUser: 'guimateusgit',
 
   socials: {
-    github: 'https://github.com/guimateusgit', // 👉 troque
+    github: 'https://github.com/guimateusgit',
     linkedin: 'https://www.linkedin.com/in/SEU-PERFIL-AQUI', // 👉 troque
   },
 } as const;
+
+/**
+ * Um link social só é exibido quando foi realmente configurado.
+ * Evita mandar um visitante para uma página que não existe.
+ */
+export function socialConfigured(url: string): boolean {
+  return !url.includes('SEU-');
+}
 
 /**
  * Números exibidos na seção "sobre.md".
