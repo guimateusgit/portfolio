@@ -30,7 +30,18 @@ export const contactSchema = z.object({
     .email('E-mail inválido.')
     .max(120, 'E-mail muito longo.'),
   company: z.string().trim().max(80, 'Nome muito longo.').optional().or(z.literal('')),
-  phone: z.string().trim().max(40, 'Telefone muito longo.').optional().or(z.literal('')),
+  // Opcional, mas se preencher tem que estar completo: DDD + número.
+  // A conferência é feita só nos dígitos, então não depende da máscara.
+  phone: z
+    .string()
+    .trim()
+    .max(20, 'Telefone muito longo.')
+    .refine(
+      (value) => value === '' || value.replace(/\D/g, '').length >= 10,
+      'Telefone incompleto — informe DDD e número.',
+    )
+    .optional()
+    .or(z.literal('')),
   projectType: z.enum(projectTypeOptions, {
     errorMap: () => ({ message: 'Selecione o tipo de projeto.' }),
   }),

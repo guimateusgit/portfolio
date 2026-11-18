@@ -13,6 +13,7 @@ import {
 } from '@/lib/contact-schema';
 import { sections } from '@/lib/sections';
 import { site, whatsappLink } from '@/lib/site';
+import { maskPhone } from '@/lib/utils';
 import { SectionBlock } from './shell/section-block';
 import { Reveal } from './ui/reveal';
 
@@ -36,6 +37,9 @@ export function Contact() {
     resolver: zodResolver(contactSchema),
     mode: 'onBlur',
   });
+
+  // Registrado à parte porque o onChange é interceptado pela máscara.
+  const phoneField = register('phone');
 
   // Recebe o que o configurador "Monte seu projeto" montou.
   useEffect(() => {
@@ -267,14 +271,24 @@ export function Contact() {
                     />
                   </Field>
 
-                  <Field label="telefone" htmlFor="phone" error={errors.phone?.message}>
+                  <Field
+                    label="telefone / whatsapp"
+                    htmlFor="phone"
+                    error={errors.phone?.message}
+                  >
                     <input
                       id="phone"
                       type="tel"
+                      inputMode="numeric"
                       autoComplete="tel"
-                      placeholder="opcional"
+                      maxLength={15}
+                      placeholder="(71) 99999-9999 — opcional"
                       className={field}
-                      {...register('phone')}
+                      {...phoneField}
+                      onChange={(event) => {
+                        event.target.value = maskPhone(event.target.value);
+                        void phoneField.onChange(event);
+                      }}
                     />
                   </Field>
 
