@@ -20,7 +20,15 @@ export const site = {
     display: '(71) 99349-7489',
     tel: `+${rawPhone}`,
   },
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://mateusguimaraes.dev',
+  /**
+   * Endereço público do site.
+   *
+   * Usado em SEO, sitemap, Open Graph e JSON-LD. O valor fixo abaixo é o que
+   * vale na prática: `NEXT_PUBLIC_*` é lida durante o BUILD, não em tempo de
+   * execução, então configurar essa variável no painel do servidor não tem
+   * efeito nenhum. Para mudar o domínio, troque aqui.
+   */
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://mateussadev.com.br',
   tagline: 'Desenvolvo software sob medida e automações com IA que geram resultado.',
   description:
     'Mateus Guimarães — Desenvolvedor Full Stack especializado em aplicações web modernas (React, Next.js, TypeScript, Node.js) e automações com Inteligência Artificial. Transformo processos manuais em sistemas rápidos, escaláveis e mensuráveis.',

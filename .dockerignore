@@ -1,0 +1,22 @@
+# Nada aqui precisa entrar na imagem — e alguns itens NÃO PODEM entrar.
+node_modules
+.next
+out
+build
+
+.git
+.gitignore
+.gitattributes
+
+# Segredos: jamais dentro de uma imagem Docker.
+.env
+.env*.local
+
+README.md
+Dockerfile
+.dockerignore
+
+.vscode
+.idea
+.DS_Store
+npm-debug.log*

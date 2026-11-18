@@ -1,8 +1,8 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Check, Mail, MapPin, Timer } from 'lucide-react';
-import { useEffect, useState, type ReactNode } from 'react';
+import { AlertCircle, Check, Loader2, Mail, MapPin, Timer } from 'lucide-react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { useForm } from 'react-hook-form';
 import { CONTACT_PREFILL_EVENT, type ContactPrefill } from '@/lib/contact-prefill';
 import {
@@ -19,8 +19,13 @@ import { Reveal } from './ui/reveal';
 
 type Status = 'idle' | 'sending' | 'success' | 'error';
 
-const field =
+const fieldBase =
   'w-full rounded-[10px] border bg-[color:var(--panel-solid)] px-3.5 py-2.5 text-[14px] outline-none transition placeholder:text-[color:var(--text-faint)] focus:border-[color:var(--cyan)]';
+
+/** Campo com borda de alerta quando a validação reprova. */
+function fieldClass(hasError?: string): string {
+  return hasError ? `${fieldBase} border-[color:var(--danger)]` : fieldBase;
+}
 
 export function Contact() {
   const [status, setStatus] = useState<Status>('idle');
@@ -40,6 +45,16 @@ export function Contact() {
 
   // Registrado à parte porque o onChange é interceptado pela máscara.
   const phoneField = register('phone');
+
+  /**
+   * Instante em que o formulário apareceu. A diferença até o envio vai junto
+   * no corpo da requisição: robô preenche em menos de um segundo, pessoa leva
+   * dezenas. O servidor descarta o que for rápido demais.
+   */
+  const openedAt = useRef(Date.now());
+
+  /** Quantos campos a validação reprovou — alimenta o resumo acima do botão. */
+  const invalidCount = Object.keys(errors).length;
 
   // Recebe o que o configurador "Monte seu projeto" montou.
   useEffect(() => {
@@ -70,7 +85,7 @@ export function Contact() {
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(values),
+        body: JSON.stringify({ ...values, elapsedMs: Date.now() - openedAt.current }),
       });
 
       const data: { ok?: boolean; error?: string } = await response.json();
@@ -82,6 +97,7 @@ export function Contact() {
       setStatus('success');
       setPrefilled(false);
       reset();
+      openedAt.current = Date.now();
     } catch (error) {
       setStatus('error');
       setServerError(
@@ -244,7 +260,8 @@ export function Contact() {
                       type="text"
                       autoComplete="name"
                       placeholder="como devo te chamar?"
-                      className={field}
+                      className={fieldClass(errors.name?.message)}
+                      aria-invalid={errors.name ? true : undefined}
                       {...register('name')}
                     />
                   </Field>
@@ -255,7 +272,8 @@ export function Contact() {
                       type="email"
                       autoComplete="email"
                       placeholder="voce@empresa.com"
-                      className={field}
+                      className={fieldClass(errors.email?.message)}
+                      aria-invalid={errors.email ? true : undefined}
                       {...register('email')}
                     />
                   </Field>
@@ -266,7 +284,8 @@ export function Contact() {
                       type="text"
                       autoComplete="organization"
                       placeholder="opcional"
-                      className={field}
+                      className={fieldClass(errors.company?.message)}
+                      aria-invalid={errors.company ? true : undefined}
                       {...register('company')}
                     />
                   </Field>
@@ -283,7 +302,8 @@ export function Contact() {
                       autoComplete="tel"
                       maxLength={15}
                       placeholder="(71) 99999-9999 — opcional"
-                      className={field}
+                      className={fieldClass(errors.phone?.message)}
+                      aria-invalid={errors.phone ? true : undefined}
                       {...phoneField}
                       onChange={(event) => {
                         event.target.value = maskPhone(event.target.value);
@@ -301,7 +321,8 @@ export function Contact() {
                     <select
                       id="projectType"
                       defaultValue=""
-                      className={field}
+                      className={fieldClass(errors.projectType?.message)}
+                      aria-invalid={errors.projectType ? true : undefined}
                       {...register('projectType')}
                     >
                       <option value="" disabled>
@@ -321,7 +342,13 @@ export function Contact() {
                     error={errors.budget?.message}
                     required
                   >
-                    <select id="budget" defaultValue="" className={field} {...register('budget')}>
+                    <select
+                      id="budget"
+                      defaultValue=""
+                      className={fieldClass(errors.budget?.message)}
+                      aria-invalid={errors.budget ? true : undefined}
+                      {...register('budget')}
+                    >
                       <option value="" disabled>
                         selecione…
                       </option>
@@ -344,27 +371,46 @@ export function Contact() {
                     id="message"
                     rows={7}
                     placeholder="qual problema você precisa resolver? existe prazo? já existe um sistema hoje?"
-                    className={`${field} prose-text resize-y`}
+                    className={`${fieldClass(errors.message?.message)} prose-text resize-y`}
+                    aria-invalid={errors.message ? true : undefined}
                     {...register('message')}
                   />
                 </Field>
 
+                {/* Resumo: aparece quando o envio é barrado pela validação */}
+                {invalidCount > 0 ? (
+                  <p
+                    role="alert"
+                    className="text-danger flex items-start gap-2.5 rounded-[10px] border px-4 py-3 text-[13px] leading-relaxed"
+                    style={{ borderColor: 'var(--danger)', background: 'var(--danger-soft)' }}
+                  >
+                    <AlertCircle className="mt-0.5 size-4 shrink-0" aria-hidden />
+                    {invalidCount === 1
+                      ? 'Falta ajustar 1 campo — está marcado abaixo.'
+                      : `Faltam ajustar ${invalidCount} campos — estão marcados abaixo.`}
+                  </p>
+                ) : null}
+
+                {/* Erro vindo do servidor */}
                 {status === 'error' && serverError ? (
                   <p
                     role="alert"
-                    className="rounded-[10px] border px-4 py-3 text-[13px]"
-                    style={{ borderColor: 'var(--violet)', color: 'var(--violet)' }}
+                    className="text-danger flex items-start gap-2.5 rounded-[10px] border px-4 py-3 text-[13px] leading-relaxed"
+                    style={{ borderColor: 'var(--danger)', background: 'var(--danger-soft)' }}
                   >
-                    {serverError} Se preferir, fale comigo direto pelo{' '}
-                    <a
-                      href={whatsappLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="underline underline-offset-2"
-                    >
-                      WhatsApp
-                    </a>
-                    .
+                    <AlertCircle className="mt-0.5 size-4 shrink-0" aria-hidden />
+                    <span>
+                      {serverError} Se preferir, fale comigo direto pelo{' '}
+                      <a
+                        href={whatsappLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline underline-offset-2"
+                      >
+                        WhatsApp
+                      </a>
+                      .
+                    </span>
                   </p>
                 ) : null}
 
@@ -373,8 +419,20 @@ export function Contact() {
                   disabled={status === 'sending'}
                   className="btn-primary w-full disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  {status === 'sending' ? 'enviando…' : 'Enviar mensagem →'}
+                  {status === 'sending' ? (
+                    <>
+                      <Loader2 className="size-4 animate-spin" aria-hidden />
+                      Enviando…
+                    </>
+                  ) : (
+                    'Enviar mensagem →'
+                  )}
                 </button>
+
+                {/* Anunciado por leitor de tela sem roubar o foco de quem digita */}
+                <span aria-live="polite" className="sr-only">
+                  {status === 'sending' ? 'Enviando sua mensagem.' : ''}
+                </span>
 
                 <p className="prose-text text-faint text-center text-[11.5px] leading-relaxed">
                   Seus dados são usados apenas para responder este contato. Sem
@@ -408,9 +466,17 @@ function Field({ label, htmlFor, error, required, children }: FieldProps) {
           </span>
         ) : null}
       </label>
+
       {children}
+
+      {/* `role="alert"` faz o leitor de tela anunciar o erro assim que aparece */}
       {error ? (
-        <p className="text-[11.5px]" style={{ color: 'var(--violet)' }}>
+        <p
+          id={`${htmlFor}-erro`}
+          role="alert"
+          className="text-danger flex items-start gap-1.5 text-[11.5px] leading-snug"
+        >
+          <span aria-hidden>↳</span>
           {error}
         </p>
       ) : null}

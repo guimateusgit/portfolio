@@ -89,6 +89,8 @@
   --cyan: #0e7490;
   --cyan-soft: rgba(14, 116, 144, 0.12);
   --violet: #7c3aed;
+  --danger: #c81e3a;
+  --danger-soft: rgba(200, 30, 58, 0.09);
 
   --aurora-a: rgba(132, 204, 22, 0.22);
   --aurora-b: rgba(34, 211, 238, 0.2);
@@ -116,6 +118,8 @@
   --cyan: #5ef6ff;
   --cyan-soft: rgba(94, 246, 255, 0.12);
   --violet: #c084fc;
+  --danger: #ff7a90;
+  --danger-soft: rgba(255, 122, 144, 0.1);
 
   --aurora-a: rgba(191, 247, 71, 0.16);
   --aurora-b: rgba(94, 246, 255, 0.14);
@@ -204,6 +208,10 @@
 
   .text-cyan {
     color: var(--cyan);
+  }
+
+  .text-danger {
+    color: var(--danger);
   }
 
   .bg-accent {
