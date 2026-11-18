@@ -178,7 +178,24 @@ function leadEmailHtml(data: Lead): string {
 </html>`;
 }
 
-/** Confirmação automática que vai para quem preencheu o formulário. */
+/**
+ * Confirmação automática que vai para quem preencheu o formulário.
+ *
+ * ⚠️  NÃO ECOE A MENSAGEM AQUI — e não é descuido, é proteção.
+ *
+ * Este e-mail vai para o endereço que o visitante digitou, que ninguém
+ * verificou. Alguém pode preencher com o e-mail de um terceiro: o seu servidor
+ * entregaria o conteúdo escrito por quem preencheu, assinado pelo seu domínio.
+ * Em escala, isso queima a reputação de envio do domínio e pode derrubar a
+ * conta no provedor de e-mail.
+ *
+ * Por isso só entram aqui campos de LISTA FECHADA (`projectType` e `budget`,
+ * validados contra os valores do schema) e o primeiro nome. O texto livre que
+ * sobra é uma palavra — sem valor como veículo de spam.
+ *
+ * A mensagem completa continua indo no e-mail do lead, que vai para um
+ * endereço fixo definido em variável de ambiente.
+ */
 function confirmationEmailHtml(data: Lead): string {
   const firstName = escapeHtml(data.name.split(' ')[0] ?? data.name);
 
@@ -205,11 +222,11 @@ function confirmationEmailHtml(data: Lead): string {
           <p style="margin:0 0 8px;color:#64748b;font-size:12px;letter-spacing:.1em;text-transform:uppercase;">O que você me enviou</p>
           <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:16px;color:#334155;font-size:14px;line-height:1.65;">
             <p style="margin:0 0 6px;"><strong>Tipo de projeto:</strong> ${escapeHtml(data.projectType)}</p>
-            <p style="margin:0 0 12px;"><strong>Orçamento:</strong> ${escapeHtml(data.budget)}</p>
-            <div style="white-space:pre-wrap;">${escapeHtml(data.message)}</div>
+            <p style="margin:0;"><strong>Orçamento:</strong> ${escapeHtml(data.budget)}</p>
           </div>
           <p style="margin:14px 0 0;color:#94a3b8;font-size:13px;line-height:1.6;">
-            Guardei isso para a nossa conversa. Se esqueceu de alguma coisa, é só responder este e-mail.
+            Guardei o restante aqui comigo para a nossa conversa. Se esqueceu de
+            alguma coisa, é só responder este e-mail.
           </p>
         </td>
       </tr>
@@ -379,10 +396,11 @@ export async function POST(request: Request): Promise<Response> {
           `Se for urgente, me chame no WhatsApp ${site.phone.display}.`,
           '',
           '--- O que você me enviou ---',
+          // Pelo mesmo motivo do HTML: só lista fechada, nada de texto livre.
           `Tipo de projeto: ${projectType}`,
           `Orçamento: ${budget}`,
           '',
-          message,
+          'Guardei o restante aqui comigo para a nossa conversa.',
           '',
           `${site.name} — ${site.shortRole}`,
         ].join('\n'),
