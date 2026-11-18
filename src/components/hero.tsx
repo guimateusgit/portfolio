@@ -116,17 +116,19 @@ export function Hero() {
                 >
                   <Github className="size-[18px]" aria-hidden />
                 </a>
-                <a
-                  href={site.socials.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="LinkedIn"
-                  className={`text-faint transition hover:text-[color:var(--cyan)] ${
-                    socialConfigured(site.socials.linkedin) ? '' : 'hidden'
-                  }`}
-                >
-                  <Linkedin className="size-[18px]" aria-hidden />
-                </a>
+                {/* Só vai para o HTML quando o link existir de verdade:
+                    esconder por CSS deixaria o buscador seguindo um link morto. */}
+                {socialConfigured(site.socials.linkedin) ? (
+                  <a
+                    href={site.socials.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="LinkedIn"
+                    className="text-faint transition hover:text-[color:var(--cyan)]"
+                  >
+                    <Linkedin className="size-[18px]" aria-hidden />
+                  </a>
+                ) : null}
                 <a
                   href={`mailto:${site.email}`}
                   aria-label="Enviar e-mail"
