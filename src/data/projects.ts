@@ -14,6 +14,12 @@
  *                  (com IP, sslip.io, vercel.app temporário) NÃO entra aqui:
  *                  cai a qualquer hora e passa impressão de inacabado.
  *   - `repoUrl`  → deixe `undefined` se o código for do cliente.
+ *   - `image`    → print do site, guardado em `public/projetos/`. Pode ser a
+ *                  página inteira, bem comprida: o cartão mostra o topo e rola
+ *                  até o rodapé quando o visitante passa o mouse. `width` e
+ *                  `height` têm que ser os do arquivo de verdade — é o que
+ *                  reserva o espaço antes de carregar e impede o texto de
+ *                  pular na tela.
  *
  *  Para acrescentar um projeto, copie o modelo comentado no fim do arquivo.
  * ============================================================================
@@ -30,7 +36,22 @@ export type Project = {
   tags: readonly string[];
   liveUrl?: string;
   repoUrl?: string;
+  image?: ProjectImage;
   accent: 'brand' | 'accent' | 'emerald';
+};
+
+/**
+ * Print do projeto.
+ *
+ * `alt` é lido em voz alta por leitor de tela e aparece se a imagem falhar —
+ * descreva o que se vê, não repita o nome do projeto, que já está no título
+ * logo abaixo.
+ */
+export type ProjectImage = {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
 };
 
 export const projects: readonly Project[] = [
@@ -59,6 +80,12 @@ export const projects: readonly Project[] = [
     solution:
       'Página única com as quatro suítes em carrossel, estrutura, mapa e rota. Cada botão de reserva abre o WhatsApp com a mensagem pronta e o tipo de quarto já escrito: a pousada recebe o pedido formatado sem precisar operar nenhum sistema novo.',
     tags: ['Reserva via WhatsApp', 'Mobile first', 'Google Maps', 'SEO local'],
+    image: {
+      src: '/projetos/recanto-do-sono.webp',
+      alt: 'Página do site da pousada: chamada de boas-vindas, as quatro suítes lado a lado, a estrutura do lugar e um mapa de como chegar.',
+      width: 561,
+      height: 958,
+    },
     // 👉 Trocar pelo domínio definitivo quando subir para produção.
     //    Hoje está em homologação: recanto-do-sono.production.pousada.158-220-102-187.sslip.io
     accent: 'emerald',
@@ -78,6 +105,12 @@ export const projects: readonly Project[] = [
  *    metric: '−40% no tempo de atendimento',   // só se for número real
  *    tags: ['Next.js', 'PostgreSQL'],
  *    liveUrl: 'https://exemplo.com',
+ *    image: {
+ *      src: '/projetos/nome-curto-sem-espaco.webp',
+ *      alt: 'O que se vê na imagem, em uma frase.',
+ *      width: 1200,                             // tamanho real do arquivo
+ *      height: 2000,
+ *    },
  *    accent: 'accent',                          // 'brand' | 'accent' | 'emerald'
  *  },
  * -------------------------------------------------------------------------- */
