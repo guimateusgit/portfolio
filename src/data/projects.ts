@@ -67,6 +67,12 @@ export const projects: readonly Project[] = [
       'Construí a página em Next.js e TypeScript seguindo a ordem das objeções reais: o problema do profissional, a solução, prova social, catálogo de lesões com avaliações, planos e dúvidas — terminando no teste gratuito.',
     tags: ['Next.js', 'TypeScript', 'Landing page', 'SEO'],
     liveUrl: 'https://kryoos.com/',
+    image: {
+      src: '/projetos/kryoos.webp',
+      alt: 'Página da Kryoos em tema escuro: chamada principal, os três problemas que o fisioterapeuta enfrenta, o que a plataforma oferece e os passos para começar.',
+      width: 578,
+      height: 956,
+    },
     accent: 'brand',
   },
   {

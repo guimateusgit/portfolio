@@ -27,31 +27,67 @@ export function Projects() {
               <article className="panel panel-live sweep group flex h-full flex-col overflow-hidden">
                 <span className="sweep-bar" aria-hidden />
 
-                {/* topo com brilho da cor do projeto */}
-                <div className="relative h-24 overflow-hidden border-b">
-                  <div
-                    className="absolute -right-8 -top-12 size-40 rounded-full blur-3xl"
-                    style={{ background: accentVar[project.accent], opacity: 0.22 }}
-                    aria-hidden
-                  />
-                  <span
-                    className="data absolute bottom-3 left-5 text-[2.6rem] font-bold leading-none"
-                    style={{ color: 'var(--line)' }}
-                    aria-hidden
-                  >
-                    {String(index + 1).padStart(2, '0')}
-                  </span>
-                  <span
-                    className="absolute right-4 top-4 rounded-full border px-2.5 py-0.5 text-[10.5px]"
-                    style={{
-                      borderColor:
-                        project.kind === 'exemplo' ? 'var(--violet)' : 'var(--line-strong)',
-                      color: project.kind === 'exemplo' ? 'var(--violet)' : 'var(--text-faint)',
-                    }}
-                  >
-                    {kindLabel[project.kind]}
-                  </span>
-                </div>
+                {project.image ? (
+                  /*
+                   * Print do site.
+                   *
+                   * A imagem é a página inteira, bem mais alta que o espaço do
+                   * cartão. `object-top` mostra o topo; no hover, a transição
+                   * de `object-position` desliza até o rodapé, como se a
+                   * pessoa estivesse rolando o site. Animar `object-position`
+                   * em vez de mover a imagem com `translate` evita depender da
+                   * proporção do arquivo: serve para print curto ou comprido,
+                   * sem conta nenhuma no CSS.
+                   */
+                  <div className="relative aspect-[16/11] overflow-hidden border-b">
+                    <img
+                      src={project.image.src}
+                      alt={project.image.alt}
+                      width={project.image.width}
+                      height={project.image.height}
+                      loading="lazy"
+                      decoding="async"
+                      className="h-full w-full object-cover object-top transition-[object-position] duration-[2200ms] ease-out group-hover:object-bottom motion-reduce:transition-none motion-reduce:group-hover:object-top"
+                    />
+                    <span
+                      className="absolute right-4 top-4 rounded-full border px-2.5 py-0.5 text-[10.5px] backdrop-blur-sm"
+                      style={{
+                        background: 'color-mix(in srgb, var(--panel-solid) 82%, transparent)',
+                        borderColor:
+                          project.kind === 'exemplo' ? 'var(--violet)' : 'var(--line-strong)',
+                        color: project.kind === 'exemplo' ? 'var(--violet)' : 'var(--text-faint)',
+                      }}
+                    >
+                      {kindLabel[project.kind]}
+                    </span>
+                  </div>
+                ) : (
+                  /* Sem print ainda: topo com o brilho da cor do projeto. */
+                  <div className="relative h-24 overflow-hidden border-b">
+                    <div
+                      className="absolute -right-8 -top-12 size-40 rounded-full blur-3xl"
+                      style={{ background: accentVar[project.accent], opacity: 0.22 }}
+                      aria-hidden
+                    />
+                    <span
+                      className="data absolute bottom-3 left-5 text-[2.6rem] font-bold leading-none"
+                      style={{ color: 'var(--line)' }}
+                      aria-hidden
+                    >
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+                    <span
+                      className="absolute right-4 top-4 rounded-full border px-2.5 py-0.5 text-[10.5px]"
+                      style={{
+                        borderColor:
+                          project.kind === 'exemplo' ? 'var(--violet)' : 'var(--line-strong)',
+                        color: project.kind === 'exemplo' ? 'var(--violet)' : 'var(--text-faint)',
+                      }}
+                    >
+                      {kindLabel[project.kind]}
+                    </span>
+                  </div>
+                )}
 
                 <div className="flex flex-1 flex-col p-6">
                   <h3 className="text-balance text-[16px] font-semibold leading-snug">
