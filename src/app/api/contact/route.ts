@@ -195,52 +195,34 @@ function leadEmailHtml(data: Lead): string {
  *
  * A mensagem completa continua indo no e-mail do lead, que vai para um
  * endereço fixo definido em variável de ambiente.
+ *
+ * ---
+ *
+ * O visual é simples DE PROPÓSITO. Nada de cartão branco flutuando sobre fundo
+ * cinza, sombra, cantos arredondados, rótulo em caixa alta ou rodapé
+ * explicando por que você recebeu a mensagem. Esse conjunto é exatamente o que
+ * o Gmail aprendeu a reconhecer como mala direta — e foi o que mandou a
+ * primeira versão deste e-mail para a aba Promoções.
+ *
+ * Uma resposta pessoal tem que se parecer com uma resposta pessoal: texto
+ * corrido, uma saudação, uma assinatura. É o mesmo motivo pelo qual o e-mail
+ * de um amigo nunca cai em Promoções.
  */
 function confirmationEmailHtml(data: Lead): string {
   const firstName = escapeHtml(data.name.split(' ')[0] ?? data.name);
 
   return `<!doctype html>
 <html lang="pt-BR">
-  <body style="margin:0;padding:24px;background:#f1f5f9;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
-    <table role="presentation" style="max-width:580px;margin:0 auto;background:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(15,23,42,.08);" cellpadding="0" cellspacing="0" width="100%">
-      <tr>
-        <td style="padding:30px 30px 10px;">
-          <h1 style="margin:0;color:#0f172a;font-size:21px;">Recebi sua mensagem, ${firstName}</h1>
-          <p style="margin:14px 0 0;color:#475569;font-size:15px;line-height:1.65;">
-            Obrigado pelo contato. Eu leio pessoalmente tudo que chega por aqui e
-            <strong>respondo em até 24 horas em dias úteis</strong>.
-          </p>
-          <p style="margin:14px 0 0;color:#475569;font-size:15px;line-height:1.65;">
-            Se for urgente, me chame direto no WhatsApp
-            <a href="${whatsappLink}" style="color:#0e7490;">${escapeHtml(site.phone.display)}</a>
-            — costumo ver mais rápido por lá.
-          </p>
-        </td>
-      </tr>
-      <tr>
-        <td style="padding:16px 30px 6px;">
-          <p style="margin:0 0 8px;color:#64748b;font-size:12px;letter-spacing:.1em;text-transform:uppercase;">O que você me enviou</p>
-          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:16px;color:#334155;font-size:14px;line-height:1.65;">
-            <p style="margin:0 0 6px;"><strong>Tipo de projeto:</strong> ${escapeHtml(data.projectType)}</p>
-            <p style="margin:0;"><strong>Orçamento:</strong> ${escapeHtml(data.budget)}</p>
-          </div>
-          <p style="margin:14px 0 0;color:#94a3b8;font-size:13px;line-height:1.6;">
-            Guardei o restante aqui comigo para a nossa conversa. Se esqueceu de
-            alguma coisa, é só responder este e-mail.
-          </p>
-        </td>
-      </tr>
-      <tr>
-        <td style="padding:22px 30px 30px;border-top:1px solid #e2e8f0;">
-          <p style="margin:0;color:#0f172a;font-size:14px;font-weight:600;">${escapeHtml(site.name)}</p>
-          <p style="margin:3px 0 0;color:#94a3b8;font-size:13px;">${escapeHtml(site.shortRole)} · ${escapeHtml(site.location)}</p>
-          <p style="margin:12px 0 0;color:#cbd5e1;font-size:11px;line-height:1.6;">
-            Você recebeu este e-mail porque preencheu o formulário de contato no meu site.
-            Seus dados são usados apenas para responder a esta solicitação e não são repassados a terceiros.
-          </p>
-        </td>
-      </tr>
-    </table>
+  <body style="margin:0;padding:0;background:#ffffff;">
+    <div style="max-width:560px;padding:12px 16px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-size:15px;line-height:1.6;color:#1f2933;">
+      <p style="margin:0 0 14px;">Oi, ${firstName}.</p>
+      <p style="margin:0 0 14px;">Recebi sua mensagem — já está comigo. Leio pessoalmente tudo que chega por aqui e respondo em até 24 horas em dias úteis.</p>
+      <p style="margin:0 0 14px;">Anotei que é um projeto de ${escapeHtml(data.projectType)}, com orçamento ${escapeHtml(data.budget)}. O resto guardei para a nossa conversa.</p>
+      <p style="margin:0 0 14px;">Se for urgente, me chama no WhatsApp: <a href="${whatsappLink}" style="color:#0e7490;">${escapeHtml(site.phone.display)}</a>. Costumo ver mais rápido por lá.</p>
+      <p style="margin:0 0 14px;">Se esqueceu de alguma coisa, é só responder este e-mail.</p>
+      <p style="margin:0 0 2px;">Até breve,</p>
+      <p style="margin:0;">${escapeHtml(site.name)}<br />${escapeHtml(site.shortRole)}</p>
+    </div>
   </body>
 </html>`;
 }
@@ -378,9 +360,11 @@ export async function POST(request: Request): Promise<Response> {
      * Falha aqui NÃO derruba a requisição: o lead já chegou, que é o que
      * importa. A pessoa só não recebe o aviso.
      *
-     * ATENÇÃO: com o remetente de teste `onboarding@resend.dev`, o Resend só
-     * entrega para o e-mail dono da conta — então esta confirmação só vai
-     * funcionar de verdade depois que você verificar um domínio próprio.
+     * ATENÇÃO: o remetente precisa ser de um domínio verificado no Resend.
+     * Com o endereço de teste `onboarding@resend.dev`, o Resend só entrega
+     * para o e-mail dono da conta e recusa todo o resto — ou seja, nenhum
+     * visitante recebe confirmação. Em produção isso vem de
+     * `CONTACT_FROM_EMAIL`, apontando para o domínio próprio.
      */
     try {
       const confirmation = await resend.emails.send({
@@ -389,20 +373,25 @@ export async function POST(request: Request): Promise<Response> {
         replyTo: to,
         subject: `Recebi sua mensagem — ${site.name}`,
         html: confirmationEmailHtml(lead),
+        // Mesmo texto da versão HTML, em texto puro. Vale a mesma regra de
+        // segurança: só campos de lista fechada e o primeiro nome.
         text: [
-          `Recebi sua mensagem, ${name.split(' ')[0] ?? name}.`,
+          `Oi, ${name.split(' ')[0] ?? name}.`,
           '',
-          'Eu leio pessoalmente tudo que chega e respondo em até 24 horas em dias úteis.',
-          `Se for urgente, me chame no WhatsApp ${site.phone.display}.`,
+          'Recebi sua mensagem — já está comigo. Leio pessoalmente tudo que chega',
+          'por aqui e respondo em até 24 horas em dias úteis.',
           '',
-          '--- O que você me enviou ---',
-          // Pelo mesmo motivo do HTML: só lista fechada, nada de texto livre.
-          `Tipo de projeto: ${projectType}`,
-          `Orçamento: ${budget}`,
+          `Anotei que é um projeto de ${projectType}, com orçamento ${budget}.`,
+          'O resto guardei para a nossa conversa.',
           '',
-          'Guardei o restante aqui comigo para a nossa conversa.',
+          `Se for urgente, me chama no WhatsApp: ${site.phone.display}.`,
+          'Costumo ver mais rápido por lá.',
           '',
-          `${site.name} — ${site.shortRole}`,
+          'Se esqueceu de alguma coisa, é só responder este e-mail.',
+          '',
+          'Até breve,',
+          `${site.name}`,
+          `${site.shortRole}`,
         ].join('\n'),
       });
 
