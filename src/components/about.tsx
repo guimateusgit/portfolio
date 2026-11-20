@@ -39,9 +39,50 @@ function splitStat(value: string): { number: number; suffix: string } {
 export function About() {
   return (
     <SectionBlock section={sections.sobre}>
+      {/*
+        Apresentação com foto.
+
+        O resto desta seção é abstrato — números, pilares, ferramentas. Isto
+        aqui é a única parte onde quem está decidindo te contratar vê um rosto
+        e lê uma frase sua. É o que transforma "um portfólio" em "uma pessoa".
+
+        O texto abaixo é um rascunho honesto, montado só com o que é verdade.
+        Reescreva com as suas palavras quando sobrar um tempo — soa melhor
+        vindo de você do que de um texto bem-comportado.
+      */}
+      <Reveal>
+        <div className="grid items-center gap-8 md:grid-cols-[minmax(0,230px)_1fr] md:gap-12">
+          <div className="panel mx-auto w-44 overflow-hidden rounded-2xl md:mx-0 md:w-full">
+            <img
+              src="/fotos/mateus.webp"
+              alt="Mateus Guimarães, de camisa preta, olhando para a câmera."
+              width={880}
+              height={1100}
+              loading="lazy"
+              decoding="async"
+              className="block w-full"
+            />
+          </div>
+
+          <div>
+            <p className="text-[19px] font-semibold md:text-[21px]">Oi, eu sou o {site.firstName}.</p>
+            <p className="prose-text text-muted mt-4 max-w-xl text-pretty text-[15.5px] leading-relaxed">
+              Tenho {site.age} anos, sou formado em Análise e Desenvolvimento de
+              Sistemas e construo projetos para clientes desde 2024.
+            </p>
+            <p className="prose-text text-muted mt-3.5 max-w-xl text-pretty text-[15.5px] leading-relaxed">
+              Quem conversa com você do começo ao fim sou eu — não tem
+              intermediário entre o que você pede e quem escreve o código. Na
+              prática isso quer dizer resposta direta, e alguém que conhece o
+              projeto inteiro no dia em que você precisar mudar alguma coisa.
+            </p>
+          </div>
+        </div>
+      </Reveal>
+
       {/* Números que contam ao aparecer */}
       <Reveal>
-        <dl className="grid gap-4 sm:grid-cols-3">
+        <dl className="mt-14 grid gap-4 sm:grid-cols-3">
           {aboutStats.map((stat) => {
             const parsed = splitStat(stat.value);
             return (

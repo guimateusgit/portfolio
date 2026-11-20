@@ -3,7 +3,7 @@
  * Altere aqui e o valor se propaga para todo o portfólio.
  */
 
-const rawPhone = '5571993497489';
+const rawPhone = '5571983622332';
 
 export const site = {
   name: 'Mateus Guimarães',
@@ -17,7 +17,7 @@ export const site = {
   email: 'mateussadev@gmail.com',
   phone: {
     raw: rawPhone,
-    display: '(71) 99349-7489',
+    display: '(71) 98362-2332',
     tel: `+${rawPhone}`,
   },
   /**

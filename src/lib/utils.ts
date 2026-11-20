@@ -9,13 +9,13 @@ export function cn(...inputs: ClassValue[]): string {
  * Formata telefone brasileiro enquanto a pessoa digita.
  *
  *   71          →  (71
- *   7199349     →  (71) 9934-9                  (vai virando fixo)
- *   7199349748  →  (71) 9934-9748               (10 dígitos: fixo)
- *   71993497489 →  (71) 99349-7489              (11 dígitos: celular)
+ *   7198362     →  (71) 9836-2                  (vai virando fixo)
+ *   7198362233  →  (71) 9836-2233               (10 dígitos: fixo)
+ *   71983622332 →  (71) 98362-2332              (11 dígitos: celular)
  *
  * Trabalha só com os dígitos, então apagar, colar texto com traço ou digitar
  * no meio do número continua funcionando. Se a pessoa colar no formato do
- * WhatsApp (+55 71 99349-7489), o código do país é descartado.
+ * WhatsApp (+55 71 98362-2332), o código do país é descartado.
  */
 export function maskPhone(value: string): string {
   let digits = value.replace(/\D/g, '');
