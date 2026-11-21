@@ -6,7 +6,7 @@ const steps = [
   {
     number: '01',
     title: 'Conversa inicial',
-    duration: 'gratuita · 30 min',
+    duration: 'sem custo · 30 min',
     text: 'Entendo o problema, o contexto do negócio e o que precisa estar pronto. Se eu não for a melhor pessoa para o projeto, eu digo na hora.',
   },
   {

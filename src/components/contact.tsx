@@ -192,8 +192,9 @@ export function Contact() {
             </ul>
 
             <p className="prose-text text-faint mt-6 text-pretty text-[13px] leading-relaxed">
-              A primeira conversa é gratuita e sem compromisso. Se eu não for a
-              melhor pessoa para o seu projeto, eu digo na hora.
+              Conversar não custa nada e não te obriga a nada — você só paga se
+              fecharmos um projeto. Se eu não for a melhor pessoa para o seu, eu
+              digo na hora.
             </p>
           </div>
         </Reveal>

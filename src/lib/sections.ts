@@ -129,7 +129,7 @@ export const sections = {
     label: 'Contato',
     title: 'Vamos conversar sobre o seu projeto',
     summary:
-      'Me conte o que está te incomodando hoje. Quanto mais contexto, mais precisa é a proposta — e a primeira conversa é gratuita.',
+      'Me conte o que está te incomodando hoje. Quanto mais contexto, mais precisa é a proposta — e conversar não custa nada.',
     keywords: ['contato', 'orçamento', 'falar', 'email', 'whatsapp', 'proposta', 'preço'],
     nav: true,
   },

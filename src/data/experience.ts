@@ -33,6 +33,21 @@ export type TimelineEntry = {
 export const timeline: readonly TimelineEntry[] = [
   {
     kind: 'work',
+    role: 'Desenvolvedor full stack',
+    org: 'cajuPay — fintech de pagamentos',
+    period: 'nov/2026 — atual',
+    current: true,
+    description:
+      'Trabalho com Go no servidor e React na interface, pegando funcionalidades de ponta a ponta. É um contexto que exige cuidado: o sistema mexe com dinheiro de terceiros.',
+    bullets: [
+      'Construí o módulo de campanhas e automações de marketing, com envio por WhatsApp, SMS e e-mail e disparos automáticos por evento.',
+      'Implementei a carteira pré-paga que controla esses envios, com débito por mensagem e estorno quando a entrega falha.',
+      'Entreguei o rastreio de pedidos físicos e evoluí a área de membros.',
+    ],
+    tags: ['Go', 'React', 'APIs e webhooks', 'Pagamentos'],
+  },
+  {
+    kind: 'work',
     role: 'Desenvolvedor web (freelance)',
     org: 'Projetos para clientes',
     period: '2024 — atual',

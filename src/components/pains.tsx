@@ -38,7 +38,7 @@ export function Pains() {
         <p className="prose-text text-muted mt-8 text-pretty text-[15px] leading-relaxed">
           Não achou o seu caso aqui? Me conta mesmo assim.{' '}
           <a href="#contato" className="text-cyan link-underline">
-            A primeira conversa é gratuita
+            Conversar não custa nada
           </a>{' '}
           e, se eu não for a pessoa certa para o seu problema, eu digo na hora.
         </p>

@@ -103,7 +103,7 @@ export function Hero() {
 
             <motion.div {...fadeUp(0.34)} className="mt-6 flex flex-wrap items-center gap-5">
               <p className="text-faint prose-text text-[13px]">
-                Primeira conversa gratuita · resposta em até 24h em dias úteis
+                Conversar não custa nada · resposta em até 24h em dias úteis
               </p>
               <span className="h-4 w-px bg-[color:var(--line)]" aria-hidden />
               <div className="flex items-center gap-4">

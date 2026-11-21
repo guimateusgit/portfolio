@@ -12,7 +12,7 @@ export const faqItems: readonly FaqItem[] = [
   {
     question: 'Como funciona o orçamento?',
     answer:
-      'Depois de uma conversa inicial gratuita, envio uma proposta com escopo detalhado, prazo e valor fechado. Sem surpresa no meio do caminho: mudanças de escopo são discutidas e aprovadas antes de serem executadas.',
+      'Depois de uma conversa inicial, envio uma proposta com escopo detalhado, prazo e valor fechado. Sem surpresa no meio do caminho: mudanças de escopo são discutidas e aprovadas antes de serem executadas.',
   },
   {
     question: 'Você usa IA para escrever o código? Isso afeta a qualidade?',
