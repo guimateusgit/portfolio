@@ -1,5 +1,5 @@
 import { sectionList } from '@/lib/sections';
-import { site, socialConfigured } from '@/lib/site';
+import { site, socialConfigured, whatsappLink } from '@/lib/site';
 
 export function Footer() {
   const year = new Date().getFullYear();
@@ -47,8 +47,18 @@ export function Footer() {
           <h2 className="label">contato</h2>
           <ul className="mt-4 space-y-2.5 text-[13px]">
             <li>
+              {/*
+                Vai para o WhatsApp, não para `tel:`.
+
+                `tel:` entrega o número ao discador do aparelho, e no celular
+                isso abre ligação ou SMS. Mas o site inteiro promete conversa
+                por WhatsApp — o rodapé era o único lugar que mandava a pessoa
+                para outro canal, bem na hora em que ela decidiu falar.
+              */}
               <a
-                href={`tel:${site.phone.tel}`}
+                href={whatsappLink}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-muted transition hover:text-[color:var(--cyan)]"
               >
                 {site.phone.display}
