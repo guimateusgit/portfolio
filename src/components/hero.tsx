@@ -1,10 +1,11 @@
 'use client';
 
-import { motion, useReducedMotion } from 'framer-motion';
+import { useReducedMotion } from 'framer-motion';
 import { ArrowDown, ArrowRight, Github, Linkedin, Mail } from 'lucide-react';
 import { heroTags, site, socialConfigured, whatsappLink } from '@/lib/site';
 import { Magnetic } from './fx/magnetic';
 import { Tilt } from './fx/tilt';
+import { Reveal } from './ui/reveal';
 
 /** Anéis do núcleo orbital. `r` é o raio em % do lado do container. */
 const ORBITS = [
@@ -18,21 +19,16 @@ const WhatsAppIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
+/**
+ * O topo da página.
+ *
+ * As entradas usam `Reveal`, que nasce visível e só se esconde depois que o
+ * JavaScript assume. A versão anterior animava direto com framer-motion, o que
+ * punha `opacity: 0` já no HTML do servidor — e deixava o visitante com uma
+ * tela preta sempre que o JavaScript não terminava de carregar.
+ */
 export function Hero() {
   const reduced = useReducedMotion();
-
-  const fadeUp = (delay: number) =>
-    reduced
-      ? {}
-      : {
-          initial: { opacity: 0, y: 26 },
-          animate: { opacity: 1, y: 0 },
-          transition: {
-            duration: 0.75,
-            delay,
-            ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
-          },
-        };
 
   return (
     <section id="topo" className="relative pt-28 md:pt-36">
@@ -40,7 +36,7 @@ export function Hero() {
         <div className="grid items-center gap-16 lg:grid-cols-[1.12fr_0.88fr]">
           {/* ---------------- coluna de texto ---------------- */}
           <div>
-            <motion.div {...fadeUp(0)} className="flex flex-wrap items-center gap-3">
+            <Reveal className="flex flex-wrap items-center gap-3">
               <span className="label">00 / início</span>
               <span className="panel inline-flex items-center gap-2 rounded-full px-3 py-1.5">
                 <span
@@ -52,32 +48,32 @@ export function Hero() {
                   disponível para novos projetos
                 </span>
               </span>
-            </motion.div>
+            </Reveal>
 
-            <motion.p {...fadeUp(0.06)} className="text-faint data mt-7 text-[12px]">
-              {site.name} · desenvolvedor full stack · {site.location}
-            </motion.p>
+            <Reveal delay={0.06}>
+              <p className="text-faint data mt-7 text-[12px]">
+                {site.name} · desenvolvedor full stack · {site.location}
+              </p>
+            </Reveal>
 
-            <motion.h1
-              {...fadeUp(0.12)}
-              className="mt-4 max-w-3xl text-balance text-[clamp(2.1rem,5.4vw,3.9rem)] font-bold leading-[1.04] tracking-[-0.02em]"
-            >
-              Eu construo sistemas e automações que{' '}
-              <span className="grad-text">devolvem tempo</span> para a sua empresa.
-            </motion.h1>
+            <Reveal delay={0.12}>
+              <h1 className="mt-4 max-w-3xl text-balance text-[clamp(2.1rem,5.4vw,3.9rem)] font-bold leading-[1.04] tracking-[-0.02em]">
+                Eu construo sistemas e automações que{' '}
+                <span className="grad-text">devolvem tempo</span> para a sua empresa.
+              </h1>
+            </Reveal>
 
-            <motion.p
-              {...fadeUp(0.2)}
-              className="prose-text text-muted mt-7 max-w-xl text-pretty text-[17px] leading-relaxed"
-            >
-              Site, sistema interno, integração entre programas, atendimento
-              automático no WhatsApp. Se hoje alguém da sua equipe faz isso na
-              mão, provavelmente dá para automatizar. Converso em português,
-              entrego com prazo e valor fechados, e você acompanha desde a
-              primeira semana.
-            </motion.p>
+            <Reveal delay={0.2}>
+              <p className="prose-text text-muted mt-7 max-w-xl text-pretty text-[17px] leading-relaxed">
+                Site, sistema interno, integração entre programas, atendimento
+                automático no WhatsApp. Se hoje alguém da sua equipe faz isso na
+                mão, provavelmente dá para automatizar. Converso em português,
+                entrego com prazo e valor fechados, e você acompanha desde a
+                primeira semana.
+              </p>
+            </Reveal>
 
-            <motion.div {...fadeUp(0.28)} className="mt-9 flex flex-wrap items-center gap-3">
+            <Reveal delay={0.28} className="mt-9 flex flex-wrap items-center gap-3">
               <Magnetic>
                 <a href="#montar" className="btn-primary group">
                   Montar meu projeto
@@ -99,9 +95,9 @@ export function Hero() {
                   Chamar no WhatsApp
                 </a>
               </Magnetic>
-            </motion.div>
+            </Reveal>
 
-            <motion.div {...fadeUp(0.34)} className="mt-6 flex flex-wrap items-center gap-5">
+            <Reveal delay={0.34} className="mt-6 flex flex-wrap items-center gap-5">
               <p className="text-faint prose-text text-[13px]">
                 Conversar não custa nada · resposta em até 24h em dias úteis
               </p>
@@ -137,16 +133,11 @@ export function Hero() {
                   <Mail className="size-[18px]" aria-hidden />
                 </a>
               </div>
-            </motion.div>
+            </Reveal>
           </div>
 
           {/* ---------------- núcleo orbital ---------------- */}
-          <motion.div
-            initial={reduced ? undefined : { opacity: 0, scale: 0.9 }}
-            animate={reduced ? undefined : { opacity: 1, scale: 1 }}
-            transition={{ duration: 1, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-            className="relative mx-auto w-full max-w-md"
-          >
+          <Reveal delay={0.25} y={0} scale={0.9} className="relative mx-auto w-full max-w-md">
             <Tilt max={9}>
               <div className="relative mx-auto aspect-square w-full">
                 {/* halo */}
@@ -237,18 +228,19 @@ export function Hero() {
             <p className="text-faint mt-4 text-center text-[11px]">
               {heroTags.length} tecnologias no dia a dia · passe o mouse
             </p>
-          </motion.div>
+          </Reveal>
         </div>
 
         {/* indicador de rolagem */}
-        <motion.a
-          {...fadeUp(0.5)}
-          href="#desafios"
-          className="text-faint mt-16 inline-flex items-center gap-2 text-[12px] transition hover:text-[color:var(--cyan)]"
-        >
-          <ArrowDown className="size-4 animate-bounce" aria-hidden />
-          role para ver se o seu caso está aqui
-        </motion.a>
+        <Reveal delay={0.5}>
+          <a
+            href="#desafios"
+            className="text-faint mt-16 inline-flex items-center gap-2 text-[12px] transition hover:text-[color:var(--cyan)]"
+          >
+            <ArrowDown className="size-4 animate-bounce" aria-hidden />
+            role para ver se o seu caso está aqui
+          </a>
+        </Reveal>
       </div>
     </section>
   );
