@@ -68,7 +68,20 @@ export function Experience() {
                 </div>
 
                 <h3 className="mt-3 text-[16px] font-semibold leading-snug">{entry.role}</h3>
-                <p className="text-muted mt-0.5 text-[13px]">{entry.org}</p>
+                <p className="text-muted mt-0.5 text-[13px]">
+                  {entry.orgUrl ? (
+                    <a
+                      href={entry.orgUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="link-underline transition hover:text-[color:var(--cyan)]"
+                    >
+                      {entry.org}
+                    </a>
+                  ) : (
+                    entry.org
+                  )}
+                </p>
 
                 <p className="prose-text text-muted mt-3 max-w-2xl text-pretty text-[15px] leading-relaxed">
                   {entry.description}

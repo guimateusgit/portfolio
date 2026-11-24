@@ -25,6 +25,13 @@ export type TimelineEntry = {
   current?: boolean;
   /** Mostra a etiqueta roxa "preencher". Remova quando preencher de verdade. */
   placeholder?: boolean;
+  /**
+   * Site da empresa ou instituição. Quando existe, o nome vira link.
+   *
+   * Só vale endereço público e estável: quem lê o portfólio clica para
+   * confirmar que o lugar existe, e um link morto faz o efeito contrário.
+   */
+  orgUrl?: string;
   description: string;
   bullets: readonly string[];
   tags: readonly string[];
@@ -35,6 +42,7 @@ export const timeline: readonly TimelineEntry[] = [
     kind: 'work',
     role: 'Desenvolvedor full stack',
     org: 'cajuPay — fintech de pagamentos',
+    orgUrl: 'https://cajupay.com.br/',
     period: 'nov/2026 — atual',
     current: true,
     description:
