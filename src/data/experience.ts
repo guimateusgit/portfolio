@@ -51,6 +51,7 @@ export const timeline: readonly TimelineEntry[] = [
       'Construí o módulo de campanhas e automações de marketing, com envio por WhatsApp, SMS e e-mail e disparos automáticos por evento.',
       'Implementei a carteira pré-paga que controla esses envios, com débito por mensagem e estorno quando a entrega falha.',
       'Entreguei o rastreio de pedidos físicos e evoluí a área de membros.',
+      'Dou suporte técnico no dia a dia: investigo problemas em produção, atendo dúvidas de integração com a API e corrijo o que aparece.',
     ],
     tags: ['Go', 'React', 'APIs e webhooks', 'Pagamentos'],
   },
